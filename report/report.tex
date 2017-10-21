@@ -1,0 +1,98 @@
+\documentclass[a4paper,titlepage]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{fullpage}
+\usepackage{indentfirst}
+\usepackage[per-mode=symbol]{siunitx}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{amsmath}
+\usepackage{array}
+\usepackage[hidelinks]{hyperref}
+\usepackage[format=plain,font=it]{caption}
+\usepackage{subcaption}
+\usepackage{standalone}
+\usepackage[nottoc]{tocbibind}
+\usepackage[noabbrev,capitalize,nameinlink]{cleveref}
+\usepackage{listings}
+\usepackage{titlesec}
+\usepackage{minted}
+\usepackage{booktabs}
+\usepackage{csvsimple}
+\usepackage{siunitx}
+\usepackage[super]{nth}
+\usepackage[titletoc]{appendix}
+
+% Custom commands
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
+
+\setminted{linenos,breaklines,fontsize=auto}
+
+%\titleformat*{\section}{\normalsize\bfseries}
+%\titleformat*{\subsection}{\small\bfseries}
+\renewcommand{\thesubsection}{\thesection.\alph{subsection}}
+\providecommand*{\listingautorefname}{Listing}
+\newcommand*{\Appendixautorefname}{Appendix}
+
+%opening
+\title{\textbf{ECSE 543 \\ Assignment 2}}
+\author{Sean Stappas \\ 260639512}
+\date{November \nth{13}, 2017}
+
+\begin{document}
+	\sloppy
+	\maketitle
+	
+	\tableofcontents
+	
+	
+	\twocolumn
+	
+	\section*{Introduction}
+	
+	\section{q1}
+	
+	\subsection{q1a}
+	
+%	\begin{figure}[!htb]
+%		\centering
+%		\includegraphics[width=0.5\columnwidth]{plots/q1_circuit_1.pdf}
+%		\caption
+%		{Test circuit 1 with labeled nodes.}
+%		\label{fig:q1_circuit_1}
+%	\end{figure}
+%
+%	\begin{table}[!htb]
+%		\centering
+%		\caption{Voltage at labeled nodes of circuit 1.}
+%		\csvautobooktabular{csv/q1_circuit_1.csv}
+%		\label{table:q1_circuit_1}
+%	\end{table}
+	
+	\onecolumn
+	
+	\begin{appendices}
+		
+		\section{Code Listings} \label{appendix:code}
+		
+		\setminted{linenos,breaklines,fontsize=\footnotesize}
+		
+%		\begin{center}
+%			\captionof{listing}{Custom matrix package (\texttt{matrices.py}).}
+%			\inputminted{python}{../matrices.py}
+%			\label{lst:matrices}
+%		\end{center}
+		
+		\section{Output Logs} \label{appendix:logs}
+		
+%		\begin{center}
+%			\captionof{listing}{Output of Question 1 program (\texttt{q1.txt}).}
+%			\inputminted{pycon}{logs/q1.txt}
+%			\label{lst:q1_log}
+%		\end{center}
+
+	\end{appendices}
+
+\end{document}
