@@ -52,19 +52,83 @@
 	
 	\section*{Introduction}
 	
-	\section{q1}
+	\section{Finite Element Triangles}
 	
-	The $S$ matrix is given by the following:
-	\[
-	S =
-		\begin{bmatrix}
-		1 & 2 & 3 \\
-		3 & 4 & 5 \\
-		3 & 4 & 5
-		\end{bmatrix}
-	\]
+	The equation for the $\alpha$ parameter for a general vertex $i$ of a finite element triangle can be seen in \autoref{eq:alpha}, where $i+1$ and $i+2$ implicitly wraps around when exceeding 3.
 	
-	\subsection{q1a}
+	\begin{equation} \label{eq:alpha}
+		\begin{split}
+			\alpha_i(x, y) = \frac{1}{2A} \big[
+			& (x_{i+1}y_{i+2} - x_{i+2}y_{i+1}) \\
+			& + (y_{i+1} - y_{i+2})x \\
+			& + (x_{i+2} - x_{i+1})y \big]
+		\end{split}
+	\end{equation}
+	
+	Using \autoref{eq:alpha}, we can solve for the entries of the local $S$ matrix, as shown in \autoref{eq:local_s}. This was used in the program to compute every entry for both example triangles.
+	
+	\begin{equation} \label{eq:local_s}
+		\begin{split}
+			S_{ij} 
+			= &\int\displaylimits_{\Delta_e}\nabla\alpha_i\cdot\nabla\alpha_j dS \\
+			= &\frac{1}{4A} \big[ (y_{i+1} - y_{i+2})(y_{j+1} - y_{j+2}) \\
+			&+ (x_{i+2} - x_{i+1})(x_{j+2} - x_{j+1})
+			\big]
+		\end{split}
+	\end{equation}
+	
+	The local $S$ matrix for the first triangle can be seen in \autoref{eq:local_s1}.
+	
+	\begin{equation} \label{eq:local_s1}
+		S_1 =
+			\begin{bmatrix}
+				0.50 & -0.50 & 0.00 \\
+				-0.50 & 1.00 & -0.50 \\
+				0.00 & -0.50 & 0.50 
+			\end{bmatrix}
+	\end{equation}
+	
+	The local $S$ matrix for the second triangle can be seen in \autoref{eq:local_s2}.
+	
+	\begin{equation} \label{eq:local_s2}
+		S_2 =
+			\begin{bmatrix}
+				1.00 & -0.50 & -0.50 \\
+				-0.50 & 0.50 & 0.00 \\
+				-0.50 & 0.00 & 0.50 
+			\end{bmatrix}
+	\end{equation}
+	
+	\section{Finite Element Coaxial Cable}
+	
+	\subsection{Mesh}
+	
+	\subsection{Electrostatic Potential}
+	
+	\subsection{Capacitance}
+	
+	The finite element energy equation can be seen in \autoref{eq:energy}.
+	
+	\begin{equation} \label{eq:energy}
+		W = \frac{1}{2} U_{con}^T S U_{con}
+	\end{equation}
+	
+	% TODO: Find correct equation here
+	\begin{equation} \label{eq:energy_capacitor}
+		W = \frac{1}{2} C V^2
+	\end{equation}
+	
+	\section{Conjugate Gradient Coaxial Cable}
+	
+	\subsection{Positive Definite Test}
+	
+	\subsection{Matrix Solution}
+	
+	\subsection{Residual Norm}
+	
+	\subsection{Potential Comparison}
+	
+	\subsection{Capacitance Improvement}
 	
 %	\begin{figure}[!htb]
 %		\centering
