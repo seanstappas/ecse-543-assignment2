@@ -54,7 +54,7 @@
 	
 	\section{Finite Element Triangles}
 	
-	The equation for the $\alpha$ parameter for a general vertex $i$ of a finite element triangle can be seen in \autoref{eq:alpha}, where $i+1$ and $i+2$ implicitly wraps around when exceeding 3.
+	The equation for the $\alpha$ parameter for a general vertex $i$ of a finite element triangle can be seen in \cref{eq:alpha}, where $i+1$ and $i+2$ implicitly wraps around when exceeding 3.
 	
 	\begin{equation} \label{eq:alpha}
 		\begin{split}
@@ -65,7 +65,7 @@
 		\end{split}
 	\end{equation}
 	
-	Using \autoref{eq:alpha}, we can solve for the entries of the local $S$ matrix, as shown in \autoref{eq:local_s}. This was used in the program to compute every entry for both example triangles.
+	Using \cref{eq:alpha}, we can solve for the entries of the local $S$ matrix, as shown in \cref{eq:local_s}. This was used in the program to compute every entry for both example triangles.
 	
 	\begin{equation} \label{eq:local_s}
 		\begin{split}
@@ -77,26 +77,48 @@
 		\end{split}
 	\end{equation}
 	
-	The local $S$ matrix for the first triangle can be seen in \autoref{eq:local_s1}.
+	The local $S$ matrix for the first triangle can be seen in \cref{eq:local_s1}.
 	
 	\begin{equation} \label{eq:local_s1}
 		S_1 =
 			\begin{bmatrix}
-				0.50 & -0.50 & 0.00 \\
-				-0.50 & 1.00 & -0.50 \\
-				0.00 & -0.50 & 0.50 
+				0.5  & -0.5 & 0 \\
+				-0.5 & 1    & -0.5 \\
+				0    & -0.5 & 0.5 
 			\end{bmatrix}
 	\end{equation}
 	
-	The local $S$ matrix for the second triangle can be seen in \autoref{eq:local_s2}.
+	The local $S$ matrix for the second triangle can be seen in \cref{eq:local_s2}.
 	
 	\begin{equation} \label{eq:local_s2}
 		S_2 =
 			\begin{bmatrix}
-				1.00 & -0.50 & -0.50 \\
-				-0.50 & 0.50 & 0.00 \\
-				-0.50 & 0.00 & 0.50 
+				1    & -0.5 & -0.5 \\
+				-0.5 & 0.5  & 0 \\
+				-0.5 & 0    & 0.5 
 			\end{bmatrix}
+	\end{equation}
+	
+	The disjoint $S$ matrix is then given in \cref{eq:local_s2}.
+	
+	% TODO: fix formatting.
+	
+	\begin{equation} \label{eq:disjoint_s}
+		S_{dis} =
+		\begin{bmatrix}
+		0.5  & -0.5  & 0     & 0     &  0    & 0     \\
+		-0.5 & 1     & -0.5  & 0     &  0    & 0     \\
+		0    & -0.5  & 0.5   & 0     &  0    & 0     \\
+		0    & 0     & 0     & 1     & -0.5  & -0.5 \\
+		0    & 0     & 0     & -0.5  & 0.5   & 0 \\
+		0    & 0     & 0     & -0.5  & 0     & 0.5 \\
+		\end{bmatrix}
+	\end{equation}
+	
+	The global matrix $S$ is then given by \cref{eq:global_s}, where 
+	
+	\begin{equation} \label{eq:global_s}
+		S = C^T S_{dis} C^T
 	\end{equation}
 	
 	\section{Finite Element Coaxial Cable}
@@ -107,24 +129,51 @@
 	
 	\subsection{Capacitance}
 	
-	The finite element energy equation can be seen in \autoref{eq:energy}.
+	The finite element functional equation can be seen in \cref{eq:functional}.
 	
-	\begin{equation} \label{eq:energy}
+	\begin{equation} \label{eq:functional}
 		W = \frac{1}{2} U_{con}^T S U_{con}
 	\end{equation}
 	
-	% TODO: Find correct equation here
+	The goal of the finite element method is to minimize $W$ to minimize the energy. However, $W$ is not equal to the energy. The relation between the energy per unit length $E$ and $W$ is shown in \cref{eq:energy}.
+	
+	\begin{equation} \label{eq:energy}
+		E = \epsilon_0 W
+	\end{equation}
+	
+	We then know that the energy per unit length $E$ is related to the capacitance per unit length $C$ as shown in \cref{eq:energy_capacitor}.
+	
 	\begin{equation} \label{eq:energy_capacitor}
-		W = \frac{1}{2} C V^2
+		E = \frac{1}{2} C V^2
+	\end{equation}
+	
+	Combining \cref{eq:functional,eq:energy,eq:energy_capacitor}, we obtain an expression for the capacitance per unit length which can be easily calculated, as shown in \autoref{eq:capacitance}.
+	
+	\begin{equation} \label{eq:capacitance}
+		C = \frac{\epsilon_0 U_{con}^T S U_{con}}{V^2}
 	\end{equation}
 	
 	\section{Conjugate Gradient Coaxial Cable}
 	
 	\subsection{Positive Definite Test}
 	
+	If the matrix $A$ is not positive definite, one can simply multiply both sides of the $Ax = b$ equation by $A^T$, forming a new equation $A^TAx = A^Tb$. This is equivalent to $A'x = b'$, where $b' = A^Tb$ and $A' = A^TA$. Here, $A'$ is now positive definite.
+	
 	\subsection{Matrix Solution}
 	
 	\subsection{Residual Norm}
+	
+	Consider a vector $\textbf{v} = \{v_1, \ldots, v_n\}$. The infinity norm $\|\textbf{v}\|_\infty$ of $\textbf{v}$ is given by the maximum absolute element of $\textbf{v}$, as shown in \cref{eq:infinity_norm}.
+	
+	\begin{equation} \label{eq:infinity_norm}
+		\|\textbf{v}\|_\infty = \max\{|v_1|, \ldots, |v_n|\}
+	\end{equation}
+	
+	Similarly, the 2-norm $\|\textbf{v}\|_2$ of $\textbf{v}$ is given by \cref{eq:2_norm}.
+	
+	\begin{equation} \label{eq:2_norm}
+		\|\textbf{v}\|_2 = \sqrt{\sum_{i = 1}^{n} v_i^2}
+	\end{equation}
 	
 	\subsection{Potential Comparison}
 	
