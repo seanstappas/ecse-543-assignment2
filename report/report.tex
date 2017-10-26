@@ -97,7 +97,7 @@
 	
 	The disjoint $S$ matrix is then given by the following:
 
-	\begin{equation*} \label{eq:disjoint_s}
+	\begin{equation*}
 		S_{dis} =
 			\begin{bmatrix}
 				\input{matrices/S_dis.txt}
@@ -106,12 +106,12 @@
 	
 	The connectivity matrix $C$ is given by \cref{eq:connectivity}.
 
-	\begin{equation*} \label{eq:connectivity}
+	\begin{equation} \label{eq:connectivity}
 		C =
 			\begin{bmatrix}
 				\input{matrices/C.txt}
 			\end{bmatrix}
-	\end{equation*}
+	\end{equation}
 	
 	The global matrix $S$ is then given by \cref{eq:global_s}.
 	
@@ -119,7 +119,7 @@
 		S = C^T S_{dis} C^T
 	\end{equation}
 	
-	Using \cref{eq:connectivity,eq:disjoint_s,eq:global_s}, we can solve for the global $S$ matrix, giving the value shown in \cref{eq:global_s_solution}.
+	Using \cref{eq:connectivity,eq:global_s}, we can solve for the global $S$ matrix, giving the value shown in \cref{eq:global_s_solution}.
 	
 	\begin{equation} \label{eq:global_s_solution}
 		S =
