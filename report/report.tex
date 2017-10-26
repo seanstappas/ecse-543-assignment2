@@ -82,9 +82,7 @@
 	\begin{equation} \label{eq:local_s1}
 		S_1 =
 			\begin{bmatrix}
-				0.5  & -0.5 & 0 \\
-				-0.5 & 1    & -0.5 \\
-				0    & -0.5 & 0.5 
+				\input{matrices/S1.txt}
 			\end{bmatrix}
 	\end{equation}
 	
@@ -93,32 +91,41 @@
 	\begin{equation} \label{eq:local_s2}
 		S_2 =
 			\begin{bmatrix}
-				1    & -0.5 & -0.5 \\
-				-0.5 & 0.5  & 0 \\
-				-0.5 & 0    & 0.5 
+				\input{matrices/S2.txt}
 			\end{bmatrix}
 	\end{equation}
 	
-	The disjoint $S$ matrix is then given in \cref{eq:local_s2}.
-	
-	% TODO: fix formatting.
-	
-	\begin{equation} \label{eq:disjoint_s}
+	The disjoint $S$ matrix is then given by the following:
+
+	\begin{equation*} \label{eq:disjoint_s}
 		S_{dis} =
-		\begin{bmatrix}
-		0.5  & -0.5  & 0     & 0     &  0    & 0     \\
-		-0.5 & 1     & -0.5  & 0     &  0    & 0     \\
-		0    & -0.5  & 0.5   & 0     &  0    & 0     \\
-		0    & 0     & 0     & 1     & -0.5  & -0.5 \\
-		0    & 0     & 0     & -0.5  & 0.5   & 0 \\
-		0    & 0     & 0     & -0.5  & 0     & 0.5 \\
-		\end{bmatrix}
-	\end{equation}
+			\begin{bmatrix}
+				\input{matrices/S_dis.txt}
+			\end{bmatrix}
+	\end{equation*}
 	
-	The global matrix $S$ is then given by \cref{eq:global_s}, where 
+	The connectivity matrix $C$ is given by \cref{eq:connectivity}.
+
+	\begin{equation*} \label{eq:connectivity}
+		C =
+			\begin{bmatrix}
+				\input{matrices/C.txt}
+			\end{bmatrix}
+	\end{equation*}
+	
+	The global matrix $S$ is then given by \cref{eq:global_s}.
 	
 	\begin{equation} \label{eq:global_s}
 		S = C^T S_{dis} C^T
+	\end{equation}
+	
+	Using \cref{eq:connectivity,eq:disjoint_s,eq:global_s}, we can solve for the global $S$ matrix, giving the value shown in \cref{eq:global_s_solution}.
+	
+	\begin{equation} \label{eq:global_s_solution}
+		S =
+			\begin{bmatrix}
+				\input{matrices/S.txt}
+			\end{bmatrix}
 	\end{equation}
 	
 	\section{Finite Element Coaxial Cable}

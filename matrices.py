@@ -93,6 +93,32 @@ class Matrix:
         """
         return Matrix.empty(self.rows, self.cols)
 
+    def save_to_csv(self, filename):
+        """
+        Saves the current matrix to a CSV file.
+
+        :param filename: the name of the CSV file
+        """
+        with open(filename, "wb") as f:
+            writer = csv.writer(f)
+            for row in self.data:
+                writer.writerow(row)
+
+    def save_to_latex(self, filename):
+        """
+        Saves the current matrix to a latex-readable matrix.
+
+        :param filename: the name of the CSV file
+        """
+        with open(filename, "wb") as f:
+            for row in range(self.rows):
+                for col in range(self.cols):
+                    f.write('{}'.format(self.data[row][col]))
+                    if col < self.cols - 1:
+                        f.write('& ')
+                if row < self.rows - 1:
+                    f.write('\\\\\n')
+
     @staticmethod
     def multiply(*matrices):
         """
