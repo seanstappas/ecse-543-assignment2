@@ -170,6 +170,12 @@
 	
 	\subsection{Matrix Solution}
 	
+	The matrix equation to be solved can be seen in \cref{eq:fd}, where $A$ is positive-definite matrix generated previously, $\phi_c$ is the unknown potential vector and $b$ contains the initial potential values along the boundaries.
+	
+	\begin{equation} \label{eq:fd}
+		A\phi_c = b
+	\end{equation}
+	
 	\subsection{Residual Norm}
 	
 	Consider a vector $\textbf{v} = \{v_1, \ldots, v_n\}$. The infinity norm $\|\textbf{v}\|_\infty$ of $\textbf{v}$ is given by the maximum absolute element of $\textbf{v}$, as shown in \cref{eq:infinity_norm}.
