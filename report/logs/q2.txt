@@ -1,0 +1,4 @@
+=== Question 2 ===
+
+=== Question 2(c) ===
+Capacitance per unit length: 5.21374340427e-11 F/m

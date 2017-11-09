@@ -1,8 +1,9 @@
-from finite_element import Triangle, find_local_s_matrix, find_global_s_matrix
+from finite_element_triangles import Triangle, find_local_s_matrix, find_global_s_matrix
 from matrices import Matrix
 
 
 def q1():
+    print('\n=== Question 1 ===')
     S1 = build_triangle_and_find_local_S(
         [0, 0, 0.02],
         [0.02, 0, 0])
@@ -27,6 +28,7 @@ def q1():
 
     S = find_global_s_matrix(S1, S2, C)
     S.save_to_latex('report/matrices/S.txt')
+    S.save_to_csv('report/csv/S.txt')
     print('S: {}'.format(S))
 
 
