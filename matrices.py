@@ -11,8 +11,8 @@ class Matrix:
 
     def __init__(self, data):
         self.data = data
-        self.rows = len(data)
-        self.cols = len(data[0])
+        self.num_rows = len(data)
+        self.num_cols = len(data[0])
 
     def __str__(self):
         string = ''
@@ -27,26 +27,28 @@ class Matrix:
             raise ValueError('Incompatible matrix sizes for addition. Matrix A is {}x{}, but matrix B is {}x{}.'
                              .format(len(self), len(self[0]), len(other), len(other[0])))
 
-        return Matrix([[self[row][col] + other[row][col] for col in range(self.cols)] for row in range(self.rows)])
+        return Matrix([[self[row][col] + other[row][col] for col in range(self.num_cols)]
+                       for row in range(self.num_rows)])
 
     def __sub__(self, other):
         if len(self) != len(other) or len(self[0]) != len(other[0]):
             raise ValueError('Incompatible matrix sizes for subtraction. Matrix A is {}x{}, but matrix B is {}x{}.'
                              .format(len(self), len(self[0]), len(other), len(other[0])))
 
-        return Matrix([[self[row][col] - other[row][col] for col in range(self.cols)] for row in range(self.rows)])
+        return Matrix([[self[row][col] - other[row][col] for col in range(self.num_cols)]
+                       for row in range(self.num_rows)])
 
     def __mul__(self, other):
-        if self.cols != other.rows:
+        if self.num_cols != other.rows:
             raise ValueError('Incompatible matrix sizes for multiplication. Matrix A is {}x{}, but matrix B is {}x{}.'
-                             .format(self.rows, self.cols, other.rows, other.cols))
+                             .format(self.num_rows, self.num_cols, other.rows, other.cols))
 
         # Inspired from https://en.wikipedia.org/wiki/Matrix_multiplication
-        product = Matrix.empty(self.rows, other.cols)
-        for i in range(self.rows):
+        product = Matrix.empty(self.num_rows, other.cols)
+        for i in range(self.num_rows):
             for j in range(other.cols):
                 row_sum = 0
-                for k in range(self.cols):
+                for k in range(self.num_cols):
                     row_sum += self[i][k] * other[k][j]
                 product[i][j] = row_sum
         return product
@@ -65,11 +67,11 @@ class Matrix:
         :return: True if the matrix if positive-definite, False otherwise.
         """
         A = copy.deepcopy(self.data)
-        for j in range(self.rows):
+        for j in range(self.num_rows):
             if A[j][j] <= 0:
                 return False
             A[j][j] = math.sqrt(A[j][j])
-            for i in range(j + 1, self.rows):
+            for i in range(j + 1, self.num_rows):
                 A[i][j] = A[i][j] / A[j][j]
                 for k in range(j + 1, i + 1):
                     A[i][k] = A[i][k] - A[i][j] * A[k][j]
@@ -79,19 +81,30 @@ class Matrix:
         """
         :return: the transpose of the current matrix
         """
-        return Matrix([[self.data[row][col] for row in range(self.rows)] for col in range(self.cols)])
+        return Matrix([[self.data[row][col] for row in range(self.num_rows)] for col in range(self.num_cols)])
 
     def mirror_horizontal(self):
         """
         :return: the horizontal mirror of the current matrix
         """
-        return Matrix([[self.data[self.rows - row - 1][col] for col in range(self.cols)] for row in range(self.rows)])
+        return Matrix([[self.data[self.num_rows - row - 1][col] for col in range(self.num_cols)]
+                       for row in range(self.num_rows)])
 
     def empty_copy(self):
         """
         :return: an empty matrix of the same size as the current matrix.
         """
-        return Matrix.empty(self.rows, self.cols)
+        return Matrix.empty(self.num_rows, self.num_cols)
+
+    def infinity_norm(self):
+        if self.num_cols > 1:
+            raise ValueError('Not a column vector.')
+        return max([abs(x) for x in self.transpose()[0]])
+
+    def two_norm(self):
+        if self.num_cols > 1:
+            raise ValueError('Not a column vector.')
+        return math.sqrt(sum([x**2 for x in self.transpose()[0]]))
 
     def save_to_csv(self, filename):
         """
@@ -111,12 +124,12 @@ class Matrix:
         :param filename: the name of the CSV file
         """
         with open(filename, "wb") as f:
-            for row in range(self.rows):
-                for col in range(self.cols):
+            for row in range(self.num_rows):
+                for col in range(self.num_cols):
                     f.write('{}'.format(self.data[row][col]))
-                    if col < self.cols - 1:
+                    if col < self.num_cols - 1:
                         f.write('& ')
-                if row < self.rows - 1:
+                if row < self.num_rows - 1:
                     f.write('\\\\\n')
 
     @staticmethod
