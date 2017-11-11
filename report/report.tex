@@ -192,7 +192,25 @@
 	
 	\subsection{Positive Definite Test}
 	
+	To form the $A$ matrix, we must consider all the free nodes in the mesh. The potential at the non-boundary free nodes is given by \cref{eq:free_node}.
+	
+	\begin{equation} \label{eq:free_node}
+		-4\phi_{i, j} + \phi_{i + 1, j}  + \phi_{i - 1, j}  + \phi_{i, j + 1}  + \phi_{i, j - 1} = 0
+	\end{equation}
+	
+	The free nodes along a boundary must satisfy the Neumann boundary condition for symmetry. Since our quarter-mesh is the bottom left corner of the overall mesh, these boundary nodes defining planes of symmetry are along the top and the right. The potential for the top nodes is given by \cref{eq:neumann_top} and that for the right nodes is given by \cref{eq:neumann_right}.
+
+	\begin{equation} \label{eq:neumann_top}
+		\phi_{i, j + 1} - \phi_{i, j - 1} = 0
+	\end{equation}
+	
+	\begin{equation} \label{eq:neumann_right}
+		\phi_{i + 1, j} - \phi_{i - 1, j} = 0
+	\end{equation}
+	
 	If the matrix $A$ is not positive definite, one can simply multiply both sides of the $Ax = b$ equation by $A^T$, forming a new equation $A^TAx = A^Tb$. This is equivalent to $A'x = b'$, where $b' = A^Tb$ and $A' = A^TA$. Here, $A'$ is now positive definite.
+	
+	The non-free nodes are fixed by the potentials of the conductors, i.e., \SI{15}{\volt} and \SI{0}{\volt}.
 	
 	\subsection{Matrix Solution}
 	
