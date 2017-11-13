@@ -8,7 +8,6 @@ import math
 
 
 class Matrix:
-
     def __init__(self, data):
         self.data = data
         self.num_rows = len(data)
@@ -30,6 +29,14 @@ class Matrix:
                 string += '{:3.0f} '.format(val)
         return string
 
+    def precision_string(self):
+        string = ''
+        for row in self.data:
+            string += '\n'
+            for val in row:
+                string += '{:6.4f} '.format(val)
+        return string
+
     def __add__(self, other):
         if len(self) != len(other) or len(self[0]) != len(other[0]):
             raise ValueError('Incompatible matrix sizes for addition. Matrix A is {}x{}, but matrix B is {}x{}.'
@@ -47,6 +54,9 @@ class Matrix:
                        for row in range(self.num_rows)])
 
     def __mul__(self, other):
+        if type(other) == float or type(other) == int:
+            return self.scalar_multiply(other)
+
         if self.num_cols != other.num_rows:
             raise ValueError('Incompatible matrix sizes for multiplication. Matrix A is {}x{}, but matrix B is {}x{}.'
                              .format(self.num_rows, self.num_cols, other.num_rows, other.num_cols))
@@ -61,6 +71,21 @@ class Matrix:
                 product[i][j] = row_sum
         return product
 
+    def scalar_multiply(self, scalar):
+        return Matrix([[self[row][col] * scalar for col in range(self.num_cols)] for row in range(self.num_rows)])
+
+    def __div__(self, other):
+        """
+        Element-wise division.
+        """
+        if self.num_rows != other.num_rows or self.num_cols != other.num_cols:
+            raise ValueError('Incompatible matrix sizes.')
+        return Matrix([[self[row][col] / other[row][col] for col in range(self.num_cols)]
+                       for row in range(self.num_rows)])
+
+    def __neg__(self):
+        return Matrix([[-self[row][col] for col in range(self.num_cols)] for row in range(self.num_rows)])
+
     def __deepcopy__(self, memo):
         return Matrix(copy.deepcopy(self.data))
 
@@ -69,6 +94,14 @@ class Matrix:
 
     def __len__(self):
         return len(self.data)
+
+    def item(self):
+        """
+        :return: the single element contained by this matrix, if it is 1x1.
+        """
+        if not (self.num_rows == 1 and self.num_cols == 1):
+            raise ValueError('Matrix is not 1x1')
+        return self.data[0][0]
 
     def is_positive_definite(self):
         """
@@ -112,7 +145,7 @@ class Matrix:
     def two_norm(self):
         if self.num_cols > 1:
             raise ValueError('Not a column vector.')
-        return math.sqrt(sum([x**2 for x in self.transpose()[0]]))
+        return math.sqrt(sum([x ** 2 for x in self.transpose()[0]]))
 
     def save_to_csv(self, filename):
         """

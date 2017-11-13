@@ -42,7 +42,7 @@
 %opening
 \title{\textbf{ECSE 543 \\ Assignment 2}}
 \author{Sean Stappas \\ 260639512}
-\date{November \nth{13}, 2017}
+\date{November \nth{20}, 2017}
 
 \begin{document}
 	\sloppy
@@ -248,9 +248,27 @@
 		\|\textbf{v}\|_2 = \sqrt{\sum_{i = 1}^{n} v_i^2}
 	\end{equation}
 	
+	\begin{figure}[!htb]
+		\centering
+		\includegraphics[width=\columnwidth]{plots/q3c_infinity.pdf}
+		\caption
+		{Value of the infinity norm of the residual vector versus iterations of the conjugate gradient algorithm.}
+		\label{fig:q3c_infinity}
+	\end{figure}
+	
+	\begin{figure}[!htb]
+		\centering
+		\includegraphics[width=\columnwidth]{plots/q3c_2.pdf}
+		\caption
+		{Value of the 2-norm of the residual vector versus iterations of the conjugate gradient algorithm.}
+		\label{fig:q3c_2}
+	\end{figure}
+
 	\subsection{Potential Comparison}
 	
-	\subsection{Capacitance Improvement}
+	\subsection{Capacitance Computation}
+	
+	The capacitance can be calculated in the same way as in Question 2(c), i.e., with \cref{eq:capacitance}. The node values must simply be mapped to same mesh used in the finite difference context.
 	
 %	\begin{figure}[!htb]
 %		\centering
