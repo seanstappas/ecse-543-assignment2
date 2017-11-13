@@ -248,11 +248,13 @@
 		\|\textbf{v}\|_2 = \sqrt{\sum_{i = 1}^{n} v_i^2}
 	\end{equation}
 	
+	The infinity norm of the residual vector versus conjugate gradient iterations can be seen in \cref{fig:q3c_infinity}. The 2-norm versus iterations can be seen in \cref{fig:q3c_2}. Both norms converge to 0 after $n = 19$ iterations, as expected.
+	
 	\begin{figure}[!htb]
 		\centering
 		\includegraphics[width=\columnwidth]{plots/q3c_infinity.pdf}
 		\caption
-		{Value of the infinity norm of the residual vector versus iterations of the conjugate gradient algorithm.}
+		{Value of the infinity norm $\|\textbf{r}\|_\infty$ of the residual vector versus iterations of the conjugate gradient algorithm.}
 		\label{fig:q3c_infinity}
 	\end{figure}
 	
@@ -260,11 +262,26 @@
 		\centering
 		\includegraphics[width=\columnwidth]{plots/q3c_2.pdf}
 		\caption
-		{Value of the 2-norm of the residual vector versus iterations of the conjugate gradient algorithm.}
+		{Value of the 2-norm $\|\textbf{r}\|_2$ of the residual vector versus iterations of the conjugate gradient algorithm.}
 		\label{fig:q3c_2}
 	\end{figure}
 
 	\subsection{Potential Comparison}
+	
+	A comparison of the potential at (0.06, 0.04) to three decimal places for various numerical methods can be seen in \cref{table:potential_comparison}. It can be seen that the potential found with all the methods is the same to three decimal places.
+	
+	\begin{table}[!htb]
+		\centering
+		\caption{Comparison of potential at (0.06, 0.04) to three decimal places for various numerical methods.}
+		\begin{tabular}{r | l}
+			\textbf{Method} & \textbf{Potential (V)} \\ \hline
+			Choleski & 5.526 \\
+			Conjugate gradient & 5.526 \\
+			Finite element & 5.526 \\
+			Finite difference (SOR) & 5.526
+		\end{tabular}
+		\label{table:potential_comparison}
+	\end{table}
 	
 	\subsection{Capacitance Computation}
 	

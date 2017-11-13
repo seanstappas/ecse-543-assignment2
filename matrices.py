@@ -29,14 +29,6 @@ class Matrix:
                 string += '{:3.0f} '.format(val)
         return string
 
-    def precision_string(self):
-        string = ''
-        for row in self.data:
-            string += '\n'
-            for val in row:
-                string += '{:6.4f} '.format(val)
-        return string
-
     def __add__(self, other):
         if len(self) != len(other) or len(self[0]) != len(other[0]):
             raise ValueError('Incompatible matrix sizes for addition. Matrix A is {}x{}, but matrix B is {}x{}.'
