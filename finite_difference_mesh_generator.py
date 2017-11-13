@@ -2,6 +2,13 @@ from matrices import Matrix
 
 
 def generate_finite_diff_mesh(mesh_size, num_free_nodes):
+    """
+    Generates a finite-difference mesh with the given size and number of free nodes.
+
+    :param mesh_size: the mesh size
+    :param num_free_nodes: the number of free nodes
+    :return: the A and b matrices defining the mesh equation (Ax = b)
+    """
     A = Matrix.empty(num_free_nodes, num_free_nodes)
     b = Matrix.empty(num_free_nodes, 1)
     for row in range(mesh_size - 3):

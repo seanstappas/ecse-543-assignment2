@@ -4,6 +4,14 @@ from matrices import Matrix
 
 
 def conjugate_gradient_solve(A, b, residual_vectors=None):
+    """
+    Solves the Ax = b matrix equation given by the given A and b matrices
+
+    :param A: the A matrix
+    :param b: the b matrix
+    :param residual_vectors: the list to store the residual vectors in
+    :return: the solved x vector
+    """
     n = len(A)
     x = Matrix.empty(n, 1)
     r = b - A * x

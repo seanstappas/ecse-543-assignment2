@@ -4,6 +4,11 @@ E_0 = 8.854187817620E-12
 
 
 def extract_mesh():
+    """
+    Extracts mesh information from the SIMPLE2D file.
+
+    :return: the extracted mesh
+    """
     with open('simple2d/result.dat') as f:
         mesh = {}
         for line_number, line in enumerate(f):
@@ -16,6 +21,14 @@ def extract_mesh():
 
 
 def compute_half_energy(S, mesh, mesh_size):
+    """
+    Computes the half-energy needed to compute the capacitance of the mesh.
+
+    :param S: the S matrix
+    :param mesh: the mesh
+    :param mesh_size: the mesh size
+    :return: the half-energy
+    """
     U_con = Matrix.empty(4, 1)
     half_energy = 0
     for row in range(mesh_size - 1):
@@ -32,6 +45,14 @@ def compute_half_energy(S, mesh, mesh_size):
 
 
 def find_capacitance(S, voltage, mesh_size):
+    """
+    Finds the capacitance per unit length of the mesh.
+
+    :param S: the S matrix
+    :param voltage: the voltage difference
+    :param mesh_size: the mesh size
+    :return: the capacitance per unit length
+    """
     mesh = extract_mesh()
     half_energy = compute_half_energy(S, mesh, mesh_size)
     capacitance = (4 * E_0 * half_energy) / voltage ** 2
