@@ -55,7 +55,15 @@
 	
 	\section*{Introduction}
 	
+	The code for this assignment was created in Python 2.7 and can be seen in \autoref{appendix:code}. To perform the required tasks in this assignment, the \mintinline{python}{Matrix} class from Assignment 1 was used, with useful methods such as add, multiply, transpose, etc. This package can be seen in the \mintinline{python}{matrices.py} file shown in \autoref{lst:matrices}. The only packages used that are not built-in are those for creating the plots for this report, i.e., \mintinline{python}{matplotlib} for plotting. The structure of the rest of the code will be discussed as appropriate for each question. Output logs of the program are provided in \autoref{appendix:logs}. The \mintinline{python}{SIMPLE2D} input and output files can be seen in \autoref{appendix:simple2d}.
+	
+	
+	
 	\section{Finite Element Triangles}
+	
+	The source code for the Question 1 program can be seen in the \mintinline{python}{q1.py} file shown in \cref{lst:q1}.
+	
+	\subsection{Local S-Matrix}
 	
 	The equation for the $\alpha$ parameter for a general vertex $i$ of a finite element triangle can be seen in \cref{eq:alpha}, where $i+1$ and $i+2$ implicitly wraps around when exceeding 3.
 	
@@ -80,7 +88,7 @@
 		\end{split}
 	\end{equation}
 	
-	The local $S$ matrix for the first triangle can be seen in \cref{eq:local_s1}.
+	The local $S$-matrix for the first triangle can be seen in \cref{eq:local_s1}.
 	
 	\begin{equation} \label{eq:local_s1}
 		S_1 =
@@ -89,7 +97,7 @@
 			\end{bmatrix}
 	\end{equation}
 	
-	The local $S$ matrix for the second triangle can be seen in \cref{eq:local_s2}.
+	The local $S$-matrix for the second triangle can be seen in \cref{eq:local_s2}.
 	
 	\begin{equation} \label{eq:local_s2}
 		S_2 =
@@ -98,7 +106,9 @@
 			\end{bmatrix}
 	\end{equation}
 	
-	The disjoint $S$ matrix is then given by the following:
+	\subsection{Global S-Matrix}
+	
+	The disjoint $S$-matrix is then given by the following:
 
 	\begin{equation*}
 		S_{dis} =
@@ -116,13 +126,13 @@
 			\end{bmatrix}
 	\end{equation}
 	
-	The global matrix $S$ is then given by \cref{eq:global_s}.
+	The global $S$-matrix is then given by \cref{eq:global_s}.
 	
 	\begin{equation} \label{eq:global_s}
 		S = C^T S_{dis} C^T
 	\end{equation}
 	
-	Using \cref{eq:connectivity,eq:global_s}, we can solve for the global $S$ matrix, giving the value shown in \cref{eq:global_s_solution}, which is computed by the \mintinline{python}{finite_element_triangles.py} script shown in \cref{lst:finite_element_triangles}.
+	Using \cref{eq:connectivity,eq:global_s}, we can solve for the global $S$-matrix, giving the value shown in \cref{eq:global_s_solution}, which is computed by the \mintinline{python}{finite_element_triangles.py} script shown in \cref{lst:finite_element_triangles}.
 	
 	\begin{equation} \label{eq:global_s_solution}
 		S =
@@ -132,6 +142,8 @@
 	\end{equation}
 	
 	\section{Finite Element Coaxial Cable}
+	
+	The source code for the Question 2 program can be seen in the \mintinline{python}{q2.py} file shown in \cref{lst:q2}.
 	
 	\subsection{Mesh}
 	
@@ -190,6 +202,8 @@
 	
 	\section{Conjugate Gradient Coaxial Cable}
 	
+	The source code for the Question 3 program can be seen in the \mintinline{python}{q3.py} file shown in \cref{lst:q3}.
+	
 	\subsection{Positive Definite Test}
 	
 	To form the $A$ matrix, we must consider all the free nodes in the mesh. The potential at the non-boundary free nodes is given by \cref{eq:free_node}.
@@ -233,6 +247,8 @@
 	\begin{equation} \label{eq:fd}
 		A\phi_c = b
 	\end{equation}
+	
+	The matrix equation is solved first by the Choleski method from Assignment 1 is applied, as found in the \mintinline{python}{choleski.py} shown in \cref{lst:choleski}. Then, the conjugate gradient method defined by \mintinline{python}{conjugate_gradient_solve} of the \mintinline{python}{conjugate_gradient.py} file shown in \cref{lst:conjugate_gradient} was applied. The solved $x$ vector from both methods can be seen in \cref{lst:q3_log}.
 	
 	\subsection{Residual Norm}
 	
@@ -357,6 +373,12 @@
 			\captionof{listing}{Finite difference mesh generator (\texttt{finite\_difference\_mesh\_generator.py}).}
 			\inputminted{python}{../finite_difference_mesh_generator.py}
 			\label{lst:finite_difference_mesh_generator}
+		\end{center}
+	
+		\begin{center}
+			\captionof{listing}{Choleski decomposition (\texttt{choleski.py}).}
+			\inputminted{python}{../choleski.py}
+			\label{lst:choleski}
 		\end{center}
 		
 		\begin{center}
