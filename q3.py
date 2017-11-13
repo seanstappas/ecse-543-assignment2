@@ -14,6 +14,7 @@ NUM_FREE_NODES = 19
 rc('font', **{'family': 'serif', 'serif': ['Computer Modern']})
 rc('text', usetex=True)
 
+
 def q3():
     print('\n=== Question 3 ===')
     A, b = q3a()
