@@ -22,6 +22,14 @@ class Matrix:
                 string += '{:6.2f} '.format(val)
         return string
 
+    def integer_string(self):
+        string = ''
+        for row in self.data:
+            string += '\n'
+            for val in row:
+                string += '{:3.0f} '.format(val)
+        return string
+
     def __add__(self, other):
         if len(self) != len(other) or len(self[0]) != len(other[0]):
             raise ValueError('Incompatible matrix sizes for addition. Matrix A is {}x{}, but matrix B is {}x{}.'
@@ -39,14 +47,14 @@ class Matrix:
                        for row in range(self.num_rows)])
 
     def __mul__(self, other):
-        if self.num_cols != other.rows:
+        if self.num_cols != other.num_rows:
             raise ValueError('Incompatible matrix sizes for multiplication. Matrix A is {}x{}, but matrix B is {}x{}.'
-                             .format(self.num_rows, self.num_cols, other.rows, other.cols))
+                             .format(self.num_rows, self.num_cols, other.num_rows, other.num_cols))
 
         # Inspired from https://en.wikipedia.org/wiki/Matrix_multiplication
-        product = Matrix.empty(self.num_rows, other.cols)
+        product = Matrix.empty(self.num_rows, other.num_cols)
         for i in range(self.num_rows):
-            for j in range(other.cols):
+            for j in range(other.num_cols):
                 row_sum = 0
                 for k in range(self.num_cols):
                     row_sum += self[i][k] * other[k][j]
