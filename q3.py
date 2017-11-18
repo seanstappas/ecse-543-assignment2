@@ -40,10 +40,10 @@ def q3b(A, b):
     A_copy = deepcopy(A)
     b_copy = deepcopy(b)
     x_choleski = choleski_solve(A_copy, b_copy)
-    print('Choleski x: {}'.format(x_choleski))
+    print('Choleski potentials: {}'.format(x_choleski))
     residual_vectors = []
     x_cg = conjugate_gradient_solve(A, b, residual_vectors)
-    print('Conjugate gradient x: {}'.format(x_cg))
+    print('Conjugate gradient potentials: {}'.format(x_cg))
     node_6_4 = 7
     return x_choleski[node_6_4][0], x_cg[node_6_4][0], residual_vectors
 

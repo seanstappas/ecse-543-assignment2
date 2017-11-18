@@ -25,7 +25,7 @@
 
 % Custom commands
 \newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
-\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\code}[1]{\mintinline{python}{#1}}
 \newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
 
 \setminted{linenos,breaklines,fontsize=auto}
@@ -57,15 +57,13 @@
 	
 	The code for this assignment was created in Python 2.7 and can be seen in \autoref{appendix:code}. To perform the required tasks in this assignment, the \mintinline{python}{Matrix} class from Assignment 1 was used, with useful methods such as add, multiply, transpose, etc. This package can be seen in the \mintinline{python}{matrices.py} file shown in \autoref{lst:matrices}. The only packages used that are not built-in are those for creating the plots for this report, i.e., \mintinline{python}{matplotlib} for plotting. The structure of the rest of the code will be discussed as appropriate for each question. Output logs of the program are provided in \autoref{appendix:logs}. The \mintinline{python}{SIMPLE2D} input and output files can be seen in \autoref{appendix:simple2d}.
 	
+	\section{FE Triangles}
 	
-	
-	\section{Finite Element Triangles}
-	
-	The source code for the Question 1 program can be seen in the \mintinline{python}{q1.py} file shown in \cref{lst:q1}.
+	The source code for the Question 1 program can be seen in the \mintinline{python}{q1.py} file shown in \cref{lst:q1}, with output shown in \cref{lst:q1_log}.
 	
 	\subsection{Local S-Matrix}
 	
-	The equation for the $\alpha$ parameter for a general vertex $i$ of a finite element triangle can be seen in \cref{eq:alpha}, where $i+1$ and $i+2$ implicitly wraps around when exceeding 3.
+	The equation for the $\alpha$ parameter for a general vertex $i$ of a finite element triangle can be seen in \cref{eq:alpha}, where $i+1$ and $i+2$ implicitly wrap around when exceeding 3, the total number of vertices in a triangle. $A$ is the area of the triangle.
 	
 	\begin{equation} \label{eq:alpha}
 		\begin{split}
@@ -76,19 +74,19 @@
 		\end{split}
 	\end{equation}
 	
-	Using \cref{eq:alpha}, we can solve for the entries of the local $S$ matrix, as shown in \cref{eq:local_s}. This was used in the program to compute every entry for both example triangles.
+	Using \cref{eq:alpha}, we can solve for the entries of the local $S$-matrix, as shown in \cref{eq:local_s}. This was used in the \code{finite_element_triangles.py} script shown in \cref{lst:finite_element_triangles} to compute every entry for both example triangles.
 	
 	\begin{equation} \label{eq:local_s}
 		\begin{split}
 			S_{ij} 
-			= &\int\displaylimits_{\Delta_e}\nabla\alpha_i\cdot\nabla\alpha_j dS \\
+			= &\int\displaylimits_{\Delta_e}\nabla\alpha_i\cdot\nabla\alpha_j ds \\
 			= &\frac{1}{4A} \big[ (y_{i+1} - y_{i+2})(y_{j+1} - y_{j+2}) \\
 			&+ (x_{i+2} - x_{i+1})(x_{j+2} - x_{j+1})
 			\big]
 		\end{split}
 	\end{equation}
 	
-	The local $S$-matrix for the first triangle can be seen in \cref{eq:local_s1}.
+	The local $S$-matrices, $S_1$ and $S_2$, for the two triangles can be seen in \cref{eq:local_s1,eq:local_s2}, as well as in the output of the \code{q1.py} program shown in \cref{lst:q1_log}.
 	
 	\begin{equation} \label{eq:local_s1}
 		S_1 =
@@ -96,8 +94,6 @@
 				\input{matrices/S1.txt}
 			\end{bmatrix}
 	\end{equation}
-	
-	The local $S$-matrix for the second triangle can be seen in \cref{eq:local_s2}.
 	
 	\begin{equation} \label{eq:local_s2}
 		S_2 =
@@ -111,10 +107,15 @@
 	The disjoint $S$-matrix is then given by the following:
 
 	\begin{equation*}
-		S_{dis} =
-			\begin{bmatrix}
-				\input{matrices/S_dis.txt}
+		\begin{split}
+			&S_{dis} = \begin{bmatrix}
+				S_1 & \textbf{0} \\
+				\textbf{0} & S_2
+			  \end{bmatrix} \\
+			&= \begin{bmatrix}
+			\input{matrices/S_dis.txt}
 			\end{bmatrix}
+		\end{split}
 	\end{equation*}
 	
 	The connectivity matrix $C$ is given by \cref{eq:connectivity}.
@@ -132,7 +133,7 @@
 		S = C^T S_{dis} C^T
 	\end{equation}
 	
-	Using \cref{eq:connectivity,eq:global_s}, we can solve for the global $S$-matrix, giving the value shown in \cref{eq:global_s_solution}, which is computed by the \mintinline{python}{finite_element_triangles.py} script shown in \cref{lst:finite_element_triangles}.
+	Using \cref{eq:connectivity,eq:global_s}, we can compute the global $S$-matrix, giving the value shown in \cref{eq:global_s_solution}, which is computed by the \mintinline{python}{finite_element_triangles.py} script shown in \cref{lst:finite_element_triangles}.
 	
 	\begin{equation} \label{eq:global_s_solution}
 		S =
@@ -141,13 +142,23 @@
 			\end{bmatrix}
 	\end{equation}
 	
-	\section{Finite Element Coaxial Cable}
+	\section{FE Coaxial Cable}
 	
-	The source code for the Question 2 program can be seen in the \mintinline{python}{q2.py} file shown in \cref{lst:q2}.
+	The source code for the Question 2 program can be seen in the \mintinline{python}{q2.py} file shown in \cref{lst:q2}, with output shown in \cref{lst:q2_log}.
 	
 	\subsection{Mesh}
+	The mesh to be used by the \mintinline{python}{SIMPLE2D} program can be seen in \cref{fig:finite_element_mesh}. The (0.06, 0.04) node is labeled in blue.
 	
-	The mesh to be used by the \mintinline{python}{SIMPLE2D} program is generated by the \mintinline{python}{finite_element_mesh_generator.py} script shown in \cref{lst:finite_element_mesh_generator}. This input and output files of the \mintinline{python}{SIMPLE2D} program are shown in \cref{lst:mesh,lst:result} of \autoref{appendix:simple2d}.
+	\begin{figure}[!htb]
+		\centering
+		\includegraphics[width=\columnwidth]{plots/finite_element_mesh.pdf}
+		\caption
+		{Finite element mesh with labeled nodes. The (0.06, 0.04) node is labeled in blue.}
+		\label{fig:finite_element_mesh}
+	\end{figure}
+	
+	
+	The mesh to be used by the \mintinline{python}{SIMPLE2D} program is generated by the \mintinline{python}{finite_element_mesh_generator.py} script shown in \cref{lst:finite_element_mesh_generator}. This generates the node positions, triangle coordinates and initial potentials for the mesh, and saves them in a \code{mesh.dat} file to be used as input for the \code{SIMPLE2D} program. This input file can be seen in \cref{lst:mesh}. The resulting output file generated by the \code{SIMPLE2D} program can be seen in \cref{lst:result}.
 	
 	\subsection{Electrostatic Potential}
 	
@@ -200,19 +211,29 @@
 	
 	The capacitance per unit length is computed as \SI{5.2137E-11}{\farad\per\meter} by the \mintinline{python}{finite_element_capacitance.py} script shown in \cref{lst:finite_element_capacitance} with output shown in \cref{lst:q2_log}.
 	
-	\section{Conjugate Gradient Coaxial Cable}
+	\section{CG Coaxial Cable}
 	
-	The source code for the Question 3 program can be seen in the \mintinline{python}{q3.py} file shown in \cref{lst:q3}.
+	The source code for the Question 3 program can be seen in the \mintinline{python}{q3.py} file shown in \cref{lst:q3}, with output shown in \cref{lst:q3_log}.
 	
 	\subsection{Positive Definite Test}
 	
-	To form the $A$ matrix, we must consider all the free nodes in the mesh. The potential at the non-boundary free nodes is given by \cref{eq:free_node}.
+	To form the $A$ matrix, we must consider all the free nodes in the mesh. There are 19 free nodes in our quarter-conductor mesh, as shown in \cref{fig:finite_difference_mesh}.
+	
+	\begin{figure}[!htb]
+		\centering
+		\includegraphics[width=\columnwidth]{plots/finite_difference_mesh.pdf}
+		\caption
+		{Finite difference mesh with labeled free nodes. The (0.06, 0.04) node is labeled in blue. The boundary free nodes are labeled in orange.}
+		\label{fig:finite_difference_mesh}
+	\end{figure}
+	
+	The potential at the non-boundary free nodes is given by \cref{eq:free_node}.
 	
 	\begin{equation} \label{eq:free_node}
 		-4\phi_{i, j} + \phi_{i + 1, j}  + \phi_{i - 1, j}  + \phi_{i, j + 1}  + \phi_{i, j - 1} = 0
 	\end{equation}
 	
-	The free nodes along a boundary must satisfy the Neumann boundary condition for symmetry. Since our quarter-mesh is the bottom left corner of the overall mesh, these boundary nodes defining planes of symmetry are along the top and the right. The Neumann boundary condition for the top nodes is given by \cref{eq:neumann_top} and that for the right nodes is given by \cref{eq:neumann_right}.
+	The free nodes along a boundary must satisfy the Neumann boundary condition for symmetry. These boundary free nodes are labeled in orange in \cref{fig:finite_difference_mesh}. Since our quarter-mesh is the bottom left corner of the overall mesh, these boundary nodes defining planes of symmetry are along the top and the right. The Neumann boundary condition for the top nodes is given by \cref{eq:neumann_top} and that for the right nodes is given by \cref{eq:neumann_right}.
 
 	\begin{equation} \label{eq:neumann_top}
 		\phi_{i, j + 1} - \phi_{i, j - 1} = 0
@@ -236,19 +257,17 @@
 	
 	With \cref{eq:free_node,eq:top_potential,eq:right_potential}, we can form the $A$ matrix from every mesh node. This is done in \mintinline{python}{finite_difference_mesh_generator.py}, as shown in \cref{lst:finite_difference_mesh_generator}. The output $A$ matrix can be seen in \cref{lst:q3_log}.
 	
-	If the matrix $A$ is not positive definite, one can simply multiply both sides of the $Ax = b$ equation by $A^T$, forming a new equation $A^TAx = A^Tb$. This is equivalent to $A'x = b'$, where $b' = A^Tb$ and $A' = A^TA$. Here, $A'$ is now positive definite.
-
-	In our case, the matrix $A$ is indeed not positive definite, and multiplying by $A^T$ made it positive definite. The before and after positive definite test can be seen in \cref{lst:q3_log}.
+	Using the \code{choleski.py} program from Assignment 1 shown in \cref{lst:choleski}, we can see that the matrix $A$ is indeed not positive definite.	To make $A$ positive definite, one can simply multiply both sides of the $Ax = b$ equation by $A^T$, forming a new equation $A^TAx = A^Tb$. This is equivalent to $A'x = b'$, where $b' = A^Tb$ and $A' = A^TA$. Here, $A'$ is now positive definite. The verification and multiplication of $A$ is done by the \code{q3.py} program shown in \cref{lst:q3}, with output shown in \cref{lst:q3_log}
 	
 	\subsection{Matrix Solution}
 	
-	The matrix equation to be solved can be seen in \cref{eq:fd}, where $A$ is positive-definite matrix generated previously, $\phi_c$ is the unknown potential vector and $b$ contains the initial potential values along the boundaries.
+	The matrix equation to be solved can be seen in \cref{eq:fd}, where $A'$ and $b'$ are the matrices generated previously and $\phi_c$ is the unknown potential vector.
 	
 	\begin{equation} \label{eq:fd}
-		A\phi_c = b
+		A'\phi_c = b'
 	\end{equation}
 	
-	The matrix equation is solved first by the Choleski method from Assignment 1 is applied, as found in the \mintinline{python}{choleski.py} shown in \cref{lst:choleski}. Then, the conjugate gradient method defined by \mintinline{python}{conjugate_gradient_solve} of the \mintinline{python}{conjugate_gradient.py} file shown in \cref{lst:conjugate_gradient} was applied. The solved $x$ vector from both methods can be seen in \cref{lst:q3_log}.
+	The matrix equation is solved first by the Choleski method from Assignment 1, as found in the \mintinline{python}{choleski.py} shown in \cref{lst:choleski}. Then, the conjugate gradient method defined by \mintinline{python}{conjugate_gradient_solve} of the \mintinline{python}{conjugate_gradient.py} file shown in \cref{lst:conjugate_gradient} was applied. The solved $\phi_c$ vector from both methods can be seen in \cref{lst:q3_log}.
 	
 	\subsection{Residual Norm}
 	
@@ -301,7 +320,7 @@
 	
 	\subsection{Capacitance Computation}
 	
-	The capacitance can be calculated in the same way as in Question 2(c), i.e., with \cref{eq:capacitance}. The node values must simply be mapped to same mesh used in the finite difference context.
+	Once the potential values are known from the finite difference solution, the capacitance can be calculated in the same way as in Question 2(c), i.e., with \cref{eq:capacitance}. The mesh must simply be converted to the finite element version to compute the $U_{con}$ and $S$ matrices. In this way, the \code{SIMPLE2D} is not needed.
 	
 %	\begin{figure}[!htb]
 %		\centering
@@ -409,13 +428,13 @@
 	
 		\section{Simple2D Data Files} \label{appendix:simple2d}	
 		\begin{center}
-			\captionof{listing}{Input mesh for the \texttt{SIMPLE2D} program.}
+			\captionof{listing}{Input mesh for the \texttt{SIMPLE2D} program (\texttt{mesh.dat}).}
 			\inputminted{pycon}{../simple2d/mesh.dat}
 			\label{lst:mesh}
 		\end{center}
 		
 		\begin{center}
-			\captionof{listing}{Resulting potentials generated by the \texttt{SIMPLE2D} program.}
+			\captionof{listing}{Resulting potentials generated by the \texttt{SIMPLE2D} program (\texttt{result.dat}).}
 			\inputminted{pycon}{../simple2d/result.dat}
 			\label{lst:result}
 		\end{center}

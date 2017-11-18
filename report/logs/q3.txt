@@ -45,7 +45,7 @@ A is positive definite: False
 A' is positive definite: True
 
 === Question 3(b) ===
-Choleski x:
+Choleski potentials:
   0.96
   1.86
   2.61
@@ -65,7 +65,7 @@ Choleski x:
   8.56
   4.25
   9.09
-Conjugate gradient x:
+Conjugate gradient potentials:
   0.96
   1.86
   2.61
@@ -87,7 +87,3 @@ Conjugate gradient x:
   9.09
 
 === Question 3(c) ===
-
-=== Question 3(d) ===
-Choleski potential at (0.06, 0.04): 5.52634126517 V
-Conjugate gradient potential at (0.06, 0.04): 5.52634127414 V
